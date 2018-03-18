@@ -34,7 +34,7 @@ Y<- M*0.8 + rnorm(N) #create normally distributed outcome predictor as a functio
 Df<-data.frame(X=X, M=M, Y=Y) #combine variables to create dataframe 
 ```
 
-##Specify your model 
+## Specify your model 
 
 Next we will specify our model using the `lavaan` model syntax. For this we need to specify our three linear regressions Y regressed onto X, Y regressed onto M and M regressed onto X. This is achieved using the `~` operator, whereby on the lefthand side we place the dependent variable `Y` and on the righthand side we place the predictor variable `X` or `M`. We will also use the parameter label option by using `*` and a letter of our choice. We can then use these labels in subsequent formulas using the `:=` operator. The `:=` operator defines new parameters, based on original model parameters. In our model we will specify a parameter to test the indirect (mediation) effect and another parameter to test the total effect (direct effect + indirect effect). 
 
