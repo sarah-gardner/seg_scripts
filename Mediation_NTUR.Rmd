@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 ## Introduction
 
-At the end of Level 4 statistics (Year 2) students are introduced to the concept of testing for mediation in regression models. Although students are taught the theoretical concepts underlying mediation, there is no formal teaching on how this particular analysis can be conducted. However, students regularly test for mediation in their Level 5 research projects (Year 3). Currently the software of choice is SPSS with a the macro PROCESS (Hayes, 2018) or SEM software such as SPSS AMOS or Mplus. The following document will demonstrate how tests of mediation can be easily and quickly achieved using R and the package `lavaan`.
+At the end of Level 4 statistics (Year 2) students are introduced to the concept of testing for mediation in regression models. Although students are taught the theoretical concepts underlying mediation, there is no formal teaching on how this particular analysis can be conducted. However, students regularly test for mediation in their Level 5 research projects (Year 3). Currently the software of choice is SPSS with the macro PROCESS (Hayes, 2018) or SEM software such as SPSS AMOS or Mplus. The following document will demonstrate how tests of mediation can be easily and quickly achieved using R and the package `lavaan`.
 
 
 ```{r install_package, echo=TRUE, message=FALSE, warning=FALSE}
