@@ -1,0 +1,58 @@
+---
+title: "Testing Mediation with Regression"
+author: "Sarah Gardner"
+date: "13 March 2018"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+## Introduction
+
+At the end of Level 4 statistics (Year 2) students are introduced to the concept of testing for mediation in regression models. Although students are taught the theoretical concepts underlying mediation, there is no formal teaching on how this particular analysis can be conducted. However, students regularly test for mediation in their Level 5 research projects (Year 3). Currently the software of choice is SPSS with a the macro PROCESS (Hayes, 2018) or SEM software such as SPSS AMOS or Mplus. The following document will demonstrate how tests of mediation can be easily and quickly achieved using R and the package `lavaan`.
+
+
+```{r install_package, echo=TRUE, message=FALSE, warning=FALSE}
+library(lavaan)
+```
+
+## Get the data
+
+For this demo we will first generate some random data. This dataset will contain three variables: Y is the dependent variable, X is the predictor variable and M is the mediator variable. 
+
+```{r dataset, echo=TRUE, message=FALSE, warning=FALSE}
+set.seed(13)
+N<- 150 #sample size
+X<- rnorm(N) #create a normally distributed predictor variable
+M<- X*0.5 + rnorm(N) #create normally distributed mediator variable as a function of X
+Y<- M*0.8 + rnorm(N) #create normally distributed outcome predictor as a function of Y
+Df<-data.frame(X=X, M=M, Y=Y) #combine variables to create dataframe 
+```
+
+#Specify your model 
+Next we will specify our model using the `lavaan` model syntax. For this we need to specify our three linear regressions Y regressed onto X, Y regressed onto M and M regressed onto X. This is achieved using the `~` operator, whereby on the lefthand side we place the dependent variable `Y` and on the righthand side we place the predictor variable `X` or `M`. We will also use the parameter label option by using `*` and a letter of our choice. We can then use these labels in subsequent formulas using the `:=` operator. The `:=` operator defines new parameters, based on original model parameters. In our model we will specify a parameter to test the indirect (mediation) effect and another parameter to test the total effect (direct effect + indirect effect). 
+
+```{r lavaan_model, echo=TRUE, message=FALSE, warning=FALSE}
+model <-  '
+           #direct effect labelled as C
+            Y ~ c*X #direct effect labelled as C
+           #indirect effect with path from X to M labelled a and path from M to Y labelled b.
+             M ~ a*X
+             Y ~ b*M
+           # indirect (mediation) effect (a*b)
+             ab := a*b
+           # total effect
+             total := c + (a*b)
+         '
+```
+
+Next we can fit the model and request the output as follows:
+```{r lavaan_fit_model, echo=TRUE, message=FALSE, warning=FALSE}
+M<-sem(model, data = Df) #fit model using 'sem' function
+summary(M)               #request output
+```
